@@ -17,7 +17,7 @@ num faces: 453846
 
 Download
 ```
-python download_faces --titles [title ids to download]
+python download_faces.py --titles [title ids to download]
 ```
 
 
