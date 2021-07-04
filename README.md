@@ -1,6 +1,6 @@
 # Naver Webtoon Datasets
 
-* https://comic.naver.com/index.nhn
+* https://comic.naver.com
 * Copyrights reserved by the authors
 
 ## Faces
