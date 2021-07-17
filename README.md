@@ -38,7 +38,7 @@ python download_faces.py --titles [title ids to download]
 
 1. Filtering
     
-    Run detector and filter out images with criteria:
+    Run detector and filter images with criteria:
 
         score > 0.82
         short edge size > 64
