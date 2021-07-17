@@ -22,6 +22,49 @@ python download_faces.py --titles [title ids to download]
 
 
 <details>
+<summary>[more information]</summary>
+
+#### Dataset Construction Pipeline
+
+0. Face detector
+  
+    Train [YOLOv5](https://github.com/ultralytics/yolov5) on the combination of two datasets
+
+        iCartoonFace: https://github.com/luxiangju-PersonAI/iCartoonFace
+
+        AnimeFaces: https://github.com/qhgz2013/anime-face-detector
+
+    for about 120 epochs (mAP 0.979)
+
+1. Filtering
+    
+    Run detector and filter out images with criteria:
+
+        score > 0.82
+        short edge size > 64
+        aspect ratio < 1.3
+
+    Then, make square box → expand 1.8 times → push down 0.2 (to roughly match the scale & alignment of CelebA-HQ and FFHQ)
+
+    Next, crop image and filter out if black or white blanks on the edge is > edge * 0.075
+
+    Finally, use [CLIP](https://github.com/openai/CLIP) to fileter out images with texts
+
+        labels = ["a face illustration without texts", "a face illustration with texts"]
+
+2. Post Processing (included in the code)
+
+    [Waifu2x](https://github.com/nagadomi/waifu2x) to upscale & denoise → resize to 256
+
+3. To Do
+    - [ ] semantic segmentation & landmark detection
+    - [ ] full-body / objects
+
+  
+</details>
+
+
+<details>
 <summary>[title info]</summary>
 
 | ID | title | author | faces |
