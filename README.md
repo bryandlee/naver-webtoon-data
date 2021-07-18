@@ -22,7 +22,7 @@ python download_faces.py --titles [title ids to download]
 
 
 <details>
-<summary>[more information]</summary>
+<summary>[details]</summary>
 
 #### Dataset Construction Pipeline
 
@@ -31,10 +31,17 @@ python download_faces.py --titles [title ids to download]
     Train [YOLOv5](https://github.com/ultralytics/yolov5) on the combination of two datasets
 
         iCartoonFace: https://github.com/luxiangju-PersonAI/iCartoonFace
-
         AnimeFaces: https://github.com/qhgz2013/anime-face-detector
 
     for about 120 epochs (mAP 0.979)
+    
+    Detection pipeline
+  
+        → full webtoon image (usually height >> width)
+        → ratio-preserving resize to width 640 
+        → split images horizontally (height 640) with overlaps (overlap = minimum detection size / 2)
+        → run detection on splitted images
+        → remove duplicated detections in overlaps
 
 1. Filtering
     
@@ -44,9 +51,12 @@ python download_faces.py --titles [title ids to download]
         short edge size > 64
         aspect ratio < 1.3
 
-    Then, make square box → expand 1.8 times → push down 0.2 (to roughly match the scale & alignment of CelebA-HQ and FFHQ)
-
-    Next, crop image and filter out if black or white blanks on the edge is > edge * 0.075
+    Then, 
+        
+        → make square
+        → expand 1.8 times
+        → push down 0.2 (to roughly match the scale & alignment of CelebA-HQ and FFHQ)
+        → crop and filter out if black/white blanks on the edge is > edge * 0.075
 
     Finally, use [CLIP](https://github.com/openai/CLIP) to fileter out images with texts
 
